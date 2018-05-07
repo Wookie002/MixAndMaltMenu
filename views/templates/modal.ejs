@@ -1,0 +1,126 @@
+<script type="text/ng-template" id="menuDetail.html">
+  <div class="modal-body">
+    <form name="modalForm">
+      <!--
+      <div class="form-group">
+        <label for="singleSelect"> SubCategory </label><br>
+        <select name="SubCategoryA" ng-model="item.SubCategoryA">
+          <option value="{{subCategory}}" ng-repeat="subCategory in subCategories">{{subCategory}}</option>
+        </select>
+      </div>
+    -->
+      <div class="form-group">
+        <label for="subCategory"> SubCategory </label><br>
+        <div>{{item.SubCategoryA}}</div>
+      </div>
+      <div class="form-group"  ng-class="{ 'has-error': modalForm.SubCategoryB.$touched && modalForm.SubCategoryB.$invalid}">
+        <label for="SubCategoryB">SubCategory B</label>
+        <input type="text" class="form-control" id="SubCategoryB" name="SubCategoryB" placeholder="SubCategory B" ng-model="item.SubCategoryB"  ng-maxlength="40">
+        <div class="help-block" ng-messages="modalForm.SubCategoryB.$error">
+            <div ng-messages-include="/message.html"></div>
+        </div>
+      </div>
+      <div class="form-group"  ng-class="{ 'has-error': modalForm.Name_eng.$touched && modalForm.Name_eng.$invalid}">
+        <label for="Name_eng">English Name</label>
+        <input type="text" class="form-control" id="Name_eng" name="Name_eng" placeholder="English Name" ng-model="item.Name_eng"  ng-maxlength="40" required>
+        <div class="help-block" ng-messages="modalForm.Name_eng.$error">
+            <div ng-messages-include="/message.html"></div>
+        </div>
+      </div>
+      <div class="form-group" ng-class="{ 'has-error': modalForm.Name_kor.$touched && modalForm.Name_kor.$invalid}">
+        <label for="Name_kor">Korean Name</label>
+        <input type="text" class="form-control" id="Name_kor" name="Name_kor" placeholder="Korean Name" ng-model="item.Name_kor" ng-maxlength="40" required>
+        <div class="help-block" ng-messages="modalForm.Name_kor.$error">
+            <div ng-messages-include="/message.html"></div>
+        </div>
+      </div>
+      <div class="form-group" ng-class="{ 'has-error': modalForm.SubMessage.$touched && modalForm.SubMessage.$invalid}">
+        <label for="SubMessage">Sub Message</label>
+        <input type="text" class="form-control" id="SubMessage" name="SubMessage" placeholder="Sub Message" ng-model="item.SubMessage" ng-maxlength="100">
+        <div class="help-block" ng-messages="modalForm.SubMessage.$error">
+            <div ng-messages-include="/message.html"></div>
+        </div>
+      </div>
+      <div class="form-group" ng-class="{ 'has-error': modalForm.EngDescription.$touched && modalForm.EngDescription.$invalid}">
+        <label for="EngDescription">English Description</label>
+        <textarea class="form-control" id="EngDescription" name="EngDescription" placeholder="EngDescription" ng-model="item.text_eng" ng-maxlength="500"></textarea>
+        <div class="help-block" ng-messages="modalForm.EngDescription.$error">
+            <div ng-messages-include="/message.html"></div>
+        </div>
+      </div>
+      <div class="form-group" ng-class="{ 'has-error': modalForm.Description.$touched && modalForm.Description.$invalid}">
+        <label for="Description">Description</label>
+        <textarea class="form-control" id="Description" name="Description" placeholder="Description" ng-model="item.text_kor" ng-maxlength="500"></textarea>
+        <div class="help-block" ng-messages="modalForm.Description.$error">
+            <div ng-messages-include="/message.html"></div>
+        </div>
+      </div>
+      <div class="form-group" ng-class="{ 'has-error': modalForm.option.$touched && modalForm.option.$invalid}" ng-if="optionConfig[item.MainCategoryCode]">
+        <label for="option">Option</label>
+        <input type="radio" id="option_no" name="option" ng-model="item.option" value="0"> Disable
+        <input type="radio" id="option_yes" name="option" ng-model="item.option" value="1"> Enable
+        <div class="help-block" ng-messages="modalForm.option.$error">
+            <div ng-messages-include="/message.html"></div>
+        </div>
+      </div>
+      <div class="form-group" ng-class="{ 'has-error': modalForm.priceA.$touched && modalForm.priceA.$invalid}" ng-if="item.option > 0">
+        <label for="priceA">{{optionConfig[item.MainCategoryCode].optionA}}</label>
+        <input type="number" class="form-control" id="priceA" name="priceA" placeholder="price A" ng-model="item.priceA" min="0" max="999999999">
+        <div class="help-block" ng-messages="modalForm.priceA.$error">
+            <div ng-messages-include="/message.html"></div>
+        </div>
+      </div>
+      <div class="form-group" ng-class="{ 'has-error': modalForm.priceB.$touched && modalForm.priceB.$invalid}">
+        <label for="priceB" ng-if="item.option == 0">Price</label>
+        <label for="priceB" ng-if="item.option == 1">{{optionConfig[item.MainCategoryCode].optionB}}</label>
+        <input type="number" class="form-control" id="priceB" name="priceB" placeholder="price B" ng-model="item.priceB" min="0" max="999999999">
+        <div class="help-block" ng-messages="modalForm.priceB.$error">
+            <div ng-messages-include="/message.html"></div>
+        </div>
+      </div>
+      <!--
+      <div class="form-group">
+        <label for="index">Index</label>
+        <input type="text" class="form-control" id="index" placeholder="Index" ng-model="item.Num">
+      </div>
+    -->
+      <div class="form-group" ng-class="{ 'has-error': modalForm.thumbnail.$touched && modalForm.thumbnail.$invalid}">
+        <label for="thumbnail">Thumbnail Image</label>
+        <div style="padding-bottom:5px;" ng-show="!thumbnail">
+          <img style="width:100px;height:100px;background: #AAA;" ng-src="{{item.thumbnail.split('/').pop()}}" />
+        </div>
+        <div style="padding-bottom:5px;" ng-show="thumbnail" >
+          <img ngf-thumbnail="thumbnail" style="width:100px;height:100px;background: #AAA;"/>
+          <button ng-click="thumbnail = null" ng-show="thumbnail">Remove</button>
+        </div>
+        <!--<input type="file" id="thumbnail" name="thumbnail" ngf-select ng-model="thumbnail" ngf-validate="{size: {max: '2MB'}, pattern: '.jpg,.png,.gif'}">-->
+        <input type="file" id="thumbnail" name="thumbnail" ngf-select ng-model="thumbnail">
+        <div class="help-block" ng-messages="modalForm.thumbnail.$error">
+            <div ng-messages-include="/message.html"></div>
+        </div>
+      </div>
+      <div class="form-group" ng-class="{ 'has-error': modalForm.MainImage1.$touched && modalForm.MainImage1.$invalid}">
+        <label for="MainImage1">Main Image</label>
+        <div style="padding-bottom:5px;" ng-show="!mainImage1">
+          <img style="width:100px;height:100px;background: #AAA;" ng-src="{{item.MainImage1.split('/').pop()}}"/>
+        </div>
+        <div style="padding-bottom:5px;" ng-show="mainImage1">
+          <img ngf-thumbnail="mainImage1" style="width:100px;height:100px;background: #AAA;" />
+          <button ng-click="mainImage1 = null" ng-show="mainImage1">Remove</button>
+        </div>
+        <!-- <input type="file" id="MainImage1" name="MainImage1"  ngf-select ng-model="mainImage1" ngf-validate="{size: {max: '4MB'}, pattern: '.jpg,.png,.gif,.JPG,.PNG,.GIF'}"> -->
+        <input type="file" id="MainImage1" name="MainImage1"  ngf-select ng-model="mainImage1">
+        <div class="help-block" ng-messages="modalForm.MainImage1.$error">
+            <div ng-messages-include="/message.html"></div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+      <button class="btn btn-primary" type="button" ng-model="isAdd" ng-show="item.isAdd" ng-click="modalForm.$valid && add(item)">ADD</button>
+      <!--<button class="btn btn-primary" type="button" ng-click="updateMenu(item)" ng-show="!item.isAdd">Update</button>-->
+      <button class="btn btn-primary " type="button" ng-click="modalForm.$valid && update(item)" ng-show="!item.isAdd">Update</button>
+      <button class="btn btn-warning " type="button" ng-click="cancel()">Cancel</button>
+      <button class="btn btn-primary " type="button" ng-click="delete(item)" ng-show="!item.isAdd">Delete</button>
+  </div>
+</script>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="menu">
+<head>
+    <% include templates/head.ejs%>
+</head>
+
+<body>
+
+<div id="wrapper"  ng-controller="mainController">
+<% include templates/header.ejs%>
+
+
+<!-- Insert Body here -->
+<div class="container">
+
+    <div class="starter-template">
+        <%- body %>
+
+        <% include templates/modal.ejs%>
+    </div>
+
+</div><!-- /.container -->
+
+</div>
+
+<!--
+/*
+include templates/footer.ejs
+*/
+-->
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/lib/boostrap/js/bootstrap.min.js"></script>
+
+<!-- Bootstrap-switch Core JavaScript -->
+<script src="/lib/boostrap/js/bootstrap-switch.min.js"></script>
+
+<!-- Menu Toggle Script -->
+<script src="/lib/angular/angular-ui.min.js"></script>
+<script>
+/*
+$('body').on('click', function (e) {
+  if (!$('.dropdown a').is(e.target) && $('.dropdown').has(e.target).length === 0 && $('.open').has(e.target).length === 0) {
+      $('.dropdown').removeClass('open');
+      $('.addSubCateInput').val("");
+  }
+});
+*/
+</script>
+
+</body>
+
+
+</html>

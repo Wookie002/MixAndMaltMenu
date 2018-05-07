@@ -1,0 +1,74 @@
+
+<!-- Sidebar -->
+<!--
+<div id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+        <li>
+          <a href="#" ng-click="getMenuSubListByFilter('')">All</a>
+        </li>
+        <li ng-repeat="menu in root.Data | unique: 'SubCategoryA'" ng-init="getSubCategory(menu.SubCategoryA)">
+            <a href="#"  ng-click="getMenuSubListByFilter(menu.SubCategoryA)">{{menu.SubCategoryA}}</a>
+        </li>
+    </ul>
+</div>
+-->
+<!-- /#sidebar-wrapper -->
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle">
+          <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+      </button>
+      <a href="#" class="navbar-brand">Mix & Malt</a>
+    </div>
+
+    <div class="collapse navbar-collapse navbar-ex1-collapse">
+      <!--
+      <ul class="nav navbar-nav">
+        <li id="menu-toggle"><a href="#">Show SubCategories</a></li>
+        <li ><a href="#" ng-click="getMenuList('Cocktail')">Cocktail</a></li>
+        <li ><a href="#" ng-click="getMenuList('Single Malt')">Single Malt</a></li>
+        <li ><a href="#" ng-click="getMenuList('Bottle')">Bottle</a></li>
+        <li ><a href="#" ng-click="getMenuList('Wine')">Wine</a></li>
+        <li ><a href="#" ng-click="getMenuList('Beer')">Beer</a></li>
+        <li ><a href="#" ng-click="getMenuList('Food')">Food</a></li>
+        <li ><a href="#" ng-click="getMenuList('Daytime')">Daytime</a></li>
+      </ul>
+    -->
+    <ul class="nav navbar-nav">
+      <li class="dropdown" ng-repeat="topMainCategory in topMainCategories" >
+        <a class="dropdown-toggle"
+          data-toggle="dropdown"
+           ng-click="getTopMenuList(topMainCategory, $event)">
+            {{topMainCategory.Category}}
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu" style="min-width:200px;" ui-sortable="sortableOptions" ng-model="subCategories">
+<!--
+            <li>
+              <a href="#" ng-click="getMenuSubListByFilter('')">All</a>
+            </li>
+            <li class="divider"></li>-->
+            <!--<li ng-repeat="subCategory in subCategories" > -->
+            <li ng-repeat="menu in root.Data | unique: 'SubCategoryA'" ng-init="getSubCategory(topMainCategory, menu)">
+                <a href="#"  ng-click="getMenuSubListByFilter(menu.SubCategoryA)">{{menu.SubCategoryA}} <span style="float:right;color:red;" ng-click="removeSubCategory(menu.SubCategoryA,$event)">x</span></a>
+            </li>
+            <li>
+              <div>
+                  <input class="addSubCateInput" type="text" ng-click="avoidClose($event)">
+                  <button type="submit" ng-click="openAddSubCategory($event)">Add</button>
+                  <div class="addSubCateErroMsg" style="color:red;"></div>
+              </div>
+            </li>
+          </ul>
+      </li>
+    </ul>
+      <div class="col-sm-3 col-md-3 navbar-btn pull-right">
+      <!--  <button type="button" class="btn btn-primary" ng-click="openOrderModal('sm')">SubCategory Order</button> -->
+        <button type="button" class="btn btn-primary" ng-disabled="!selectedSubCategory" ng-click="open('lg', null)">Add New</button>
+        <button type="button" class="btn btn-primary" ng-disabled="!selectedSubCategory" ng-click="saveOrdering()">Save Order</button>
+    	</div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+body {
+  padding: 50px;
+  padding-top: 60px;
+  padding-bottom: 40px;
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+  /* font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; */
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+  padding: 10px;
+}
+
+.menuWrapper {
+  border: 1px dashed #CCC;
+  position: relative;
+}
+
+.menuWrapper > div {
+  background: #AAA;
+  position: absolute;
+}
+
+.menuWrapper > .ss-placeholder-child {
+  background: transparent;
+  border: 1px dashed blue;
+}
+
+.spinner {
+  margin: 50px;
+  height: 28px;
+  width: 28px;
+  animation: rotate 0.8s infinite linear;
+  border: 8px solid #fff;
+  border-right-color: transparent;
+  border-radius: 50%;
+}
+
+@keyframes rotate {
+  0%    { transform: rotate(0deg); }
+  100%  { transform: rotate(360deg); }
+}
+
+a, figure {
+    display: block;
+}
+figcaption {
+    margin: 10px 0 0 0;
+    font-variant: small-caps;
+    font-family: Arial;
+    font-weight: bold;
+    color: #bb3333;
+}
+figure {
+    padding: 5px;
+}

@@ -1,0 +1,90 @@
+body {
+  padding: 50px;
+  padding-top: 51px;
+  padding-bottom: 40px;
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+  /* font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; */
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #AAA;
+  padding: 10px;
+}
+
+.menuWrapper {
+  position: relative;
+}
+
+.menuWrapper > figure {
+  background: #AAA;
+  position: absolute;
+}
+
+.menuWrapper > .ss-placeholder-child {
+  background: transparent;
+}
+
+.spinner {
+  margin: 50px;
+  height: 28px;
+  width: 28px;
+  animation: rotate 0.8s infinite linear;
+  border: 8px solid #fff;
+  border-right-color: transparent;
+  border-radius: 50%;
+}
+
+@keyframes rotate {
+  0%    { transform: rotate(0deg); }
+  100%  { transform: rotate(360deg); }
+}
+
+a, figure {
+    display: inline-block;
+}
+figcaption {
+    margin: 10px 0 0 0;
+    font-variant: small-caps;
+    font-family: Arial;
+    font-weight: bold;
+    color: #bb3333;
+    width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+figure {
+    padding: 5px;
+}
+
+/* CSSTerm.com Simple CSS menu */
+
+.menu_simple ul {
+    margin: 0;
+    padding: 0;
+    width:185px;
+    list-style-type: none;
+}
+
+.menu_simple ul li a {
+    text-decoration: none;
+    color: white;
+    padding: 10.5px 11px;
+    background-color: #005555;
+    display:block;
+}
+
+.menu_simple ul li a:visited {
+    color: white;
+}
+
+.menu_simple ul li a:hover, .menu_simple ul li .current {
+    color: white;
+    background-color: #5FD367;
+}
