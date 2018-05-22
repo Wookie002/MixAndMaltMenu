@@ -3,22 +3,12 @@ var router = express.Router();
 var mysql  = require('mysql');
 
 var connection = mysql.createConnection({
-    host    :'10.0.0.1',
-    port : 3306,
-    user : 'mixandmalt',
-    password : 'mixandmalt123',
-    database:'mixandmalt'
-});
-
-/*
-var connection = mysql.createConnection({
     host    :'127.0.0.1',
     port : 3306,
-    user : 'adminJ9YTwJ9',
-    password : 'A6XqkzKVDUc6',
-    database:'menu'
+    user : 'mixandmalt2',
+    password : 'mixandmalt123',
+    database:'mixandmalt2'
 });
-*/
 
 /* import json data*/
 router.get('/import', function(req, res, next) {
@@ -97,8 +87,7 @@ router.get('/import3', function(req, res, next) {
       console.log('Last record insert id:', res);
     });
   }
-
-  //console.log(root);
+  
   res.json(root);
 })
 
@@ -175,6 +164,7 @@ router.get('/getMenuListView', function(req, res, next) {
   console.log(mainCategoryCode);
 
   var query = connection.query('select * from category where Code = ?',[mainCategoryCode],function(err,rows){
+    console.log(rows);
     var menu = rows[0];
     var query = connection.query('select * from menu where MainCategoryCode = ? order by Num ASC',[mainCategoryCode],function(err,rows){
       menu.Data = rows;
@@ -217,8 +207,7 @@ router.post('/saveMenu', function(req, res, next) {
     menu.Data[k].priceB = menu.Data[k].priceB != null ?parseInt(menu.Data[k].priceB):null;
     menu.Data[k].type = menu.Data[k].type != null ?parseInt(menu.Data[k].type):null;
   }
-  console.log("test");
-  console.log(menu.Code);
+
   connection.query('DELETE FROM menu WHERE MainCategoryCode = ?', menu.Code, function(err, result){
     if(err) throw err;
 

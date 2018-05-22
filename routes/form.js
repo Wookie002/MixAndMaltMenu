@@ -7,22 +7,12 @@ var maxSize =  2 * 1024*1024;
 var mysql  = require('mysql');
 
 var connection = mysql.createConnection({
-    host    :'10.0.0.1',
-    port : 3306,
-    user : 'mixandmalt',
-    password : 'mixandmalt123',
-    database:'mixandmalt'
-});
-
-/*
-var connection = mysql.createConnection({
     host    :'127.0.0.1',
     port : 3306,
-    user : 'adminJ9YTwJ9',
-    password : 'A6XqkzKVDUc6',
-    database:'menu'
+    user : 'mixandmalt2',
+    password : 'mixandmalt123',
+    database:'mixandmalt2'
 });
-*/
 
 var basePath = '/home/hosting_users/mixandmalt/apps/mixandmalt_ipadmenu/public/upload/';
 

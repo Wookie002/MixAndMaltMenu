@@ -31,7 +31,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/', form);
 
-var basePath = '/home/hosting_users/mixandmalt/apps/mixandmalt_ipadmenu/public/upload/';
+//var basePath = '/home/hosting_users/mixandmalt/apps/mixandmalt_ipadmenu/public/upload/';
+var basePath = path.join(__dirname, 'public/upload/');
 var addDocuments = "/";
 
 app.use(addDocuments, express.static(basePath));
