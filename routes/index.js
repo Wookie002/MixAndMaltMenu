@@ -22,12 +22,8 @@ router.get('/import', function(req, res, next) {
 
     connection.query('INSERT INTO menu SET ?', menu, function(err,res){
       if(err) throw err;
-
-      console.log('Last record insert id:', res);
     });
   }
-
-  //console.log(root);
   res.json(root);
 })
 
@@ -43,12 +39,8 @@ router.get('/import1', function(req, res, next) {
 
     connection.query('INSERT INTO menu SET ?', menu, function(err,res){
       if(err) throw err;
-
-      console.log('Last record insert id:', res);
     });
   }
-
-  //console.log(root);
   res.json(root);
 })
 
@@ -63,12 +55,8 @@ router.get('/import2', function(req, res, next) {
 
     connection.query('INSERT INTO menu SET ?', menu, function(err,res){
       if(err) throw err;
-
-      console.log('Last record insert id:', res);
     });
   }
-
-  //console.log(root);
   res.json(root);
 })
 
@@ -83,11 +71,8 @@ router.get('/import3', function(req, res, next) {
 
     connection.query('INSERT INTO menu SET ?', menu, function(err,res){
       if(err) throw err;
-
-      console.log('Last record insert id:', res);
     });
   }
-  
   res.json(root);
 })
 
@@ -102,12 +87,8 @@ router.get('/import4', function(req, res, next) {
 
     connection.query('INSERT INTO menu SET ?', menu, function(err,res){
       if(err) throw err;
-
-      console.log('Last record insert id:', res);
     });
   }
-
-  //console.log(root);
   res.json(root);
 })
 
@@ -122,12 +103,8 @@ router.get('/import5', function(req, res, next) {
 
     connection.query('INSERT INTO menu SET ?', menu, function(err,res){
       if(err) throw err;
-
-      console.log('Last record insert id:', res);
     });
   }
-
-  //console.log(root);
   res.json(root);
 })
 
@@ -142,12 +119,8 @@ router.get('/import6', function(req, res, next) {
 
     connection.query('INSERT INTO menu SET ?', menu, function(err,res){
       if(err) throw err;
-
-      console.log('Last record insert id:', res);
     });
   }
-
-  //console.log(root);
   res.json(root);
 })
 
@@ -158,13 +131,8 @@ router.get('/', function(req, res, next) {
 
 /* get web view data*/
 router.get('/getMenuListView', function(req, res, next) {
-
   var mainCategoryCode = req.query.mainCategoryCode;
-
-  console.log(mainCategoryCode);
-
   var query = connection.query('select * from category where Code = ?',[mainCategoryCode],function(err,rows){
-    console.log(rows);
     var menu = rows[0];
     var query = connection.query('select * from menu where MainCategoryCode = ? order by Num ASC',[mainCategoryCode],function(err,rows){
       menu.Data = rows;
@@ -175,11 +143,7 @@ router.get('/getMenuListView', function(req, res, next) {
 
 /* get ipad menu data*/
 router.get('/getMenuList', function(req, res, next) {
-
   var mainCategoryCode = req.query.mainCategoryCode;
-
-  console.log("mainCategory:" + mainCategoryCode);
-
   var query = connection.query('select * from category where Code = ?',[mainCategoryCode],function(err,rows){
     var menu = rows[0];
     var query = connection.query('select * from menu where MainCategoryCode = ? order by Num ASC',[mainCategoryCode],function(err,rows){
@@ -211,17 +175,9 @@ router.post('/saveMenu', function(req, res, next) {
   connection.query('DELETE FROM menu WHERE MainCategoryCode = ?', menu.Code, function(err, result){
     if(err) throw err;
 
-    /*
-    for (var i=0; i < menu.Data.length; i++) {
-      var menuItem = menu.Data[i];
-
-      connection.query('INSERT INTO menu SET ?', menuItem, function(err,res){
-        if(err) throw err;
-
-        //console.log('Last record insert id:', res);
-      });
+    if(menu.Data.length == 0) {
+      return res.json({"result": "success"});
     }
-    */
 
     var fields = "";
     var fieldArr = ["MainCategory"
@@ -254,9 +210,9 @@ router.post('/saveMenu', function(req, res, next) {
     , "text_kor"
     , "isAdd"];
 
-    for (var i=0; i < fieldArr.lenght; i++) {
+    for (var i=0; i < fieldArr.length; i++) {
       if (!fields) {
-        fields += key;
+        fields += fieldArr[i];
       } else {
         if (fieldArr[i] == "option") {
           fields += ", `option`";
@@ -278,7 +234,6 @@ router.post('/saveMenu', function(req, res, next) {
     var sql = 'INSERT INTO menu (' + fields + ') VALUES ?'
     connection.query(sql, [values], function(err,response){
       if(err) {
-        console.log(err);
         throw err;
       }
       res.json({"result": "success"});

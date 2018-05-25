@@ -8,6 +8,8 @@ menu.controller('mainController', function ($scope, $http, $uibModal, $filter, s
 	, {Code: "beer", Category:"Beer"}
 	, {Code: "food", Category:"Food"}
 	, {Code: "daytime", Category:"Daytime"}];
+	$scope.selectedCategory = "cocktail";
+	$scope.selectedSubCategory = "";
 
 	$scope.getSubCategory = function (topMainCategory, menu) {
 		if (topMainCategory.Code == menu.MainCategoryCode) {
@@ -22,31 +24,27 @@ menu.controller('mainController', function ($scope, $http, $uibModal, $filter, s
 		$scope.filterMenus = data.Data;
 		$scope.root = data;
 		$scope.getMenuSubListByFilter('');
-		$scope.selectedCategory = data.Code;
 	})
 	.error(function(data) {
 		console.log('Error: ' + data);
 	});
 
 	$scope.getTopMenuList = function (category, $event) {
-		if ($scope.selectedCategory == category.Code && !$scope.selectedSubCategory) {
+		if ($scope.selectedCategory == category.Code) {
 			return;
 		}
-
 		$scope.selectedCategory = category.Code;
-
+		$scope.selectedSubCategory = "";
 		$scope.getMenuList(category.Code);
 	}
 
 	$scope.getMenuList = function (category) {
-
 		$http.get('/getMenuListView',{params:{"mainCategoryCode": category}})
 		.success(function(data) {
 			$scope.subCategories = [];
 			$scope.menus = data.Data;
-		//	$scope.filterMenus = data.Data;
 			$scope.root = data;
-			$scope.getMenuSubListByFilter('');
+			$scope.getMenuSubListByFilter($scope.selectedSubCategory);
 		})
 		.error(function(data) {
 			console.log('Error: ' + data);
@@ -69,14 +67,12 @@ menu.controller('mainController', function ($scope, $http, $uibModal, $filter, s
 	}
 
 	$scope.addMenu = function (menus, newMenus) {
-
 		for (var i=0; i < newMenus.length; i++) {
 			menus.push();
 		}
 	}
 
 	$scope.isAdd = false;
-
 	$scope.open = function (size, item, addSubCategory) {
 		sharedProperties.setSubCategories($scope.subCategories);
 		sharedProperties.setMenus($scope.menus);
@@ -87,49 +83,44 @@ menu.controller('mainController', function ($scope, $http, $uibModal, $filter, s
 			item.MainCategory = $scope.root.Category;
 			item.MainCategoryCode = $scope.root.Code;
 			item.SubCategoryA = addSubCategory? addSubCategory:$scope.selectedSubCategory;
-      item.SubMessage = null;
+      		item.SubMessage = null;
 			item.option=0;
-    	item.MultiLine = 0;
-      item.line1_eng = null;
-      item.line2_eng = null;
-      item.line1_kor = null;
-      item.line2_kor= null;
-      item.optionA="";
-      item.priceA=null;
-      item.imageA="";
-      item.optionB="";
-      item.imageB="";
-      item.thumbnail= "Default_Main01.jpg";
-      item.type = 1;
-      item.MainImage1 = "Default_Thumb.jpg";
-      item.MainImage2 = null;
-      item.MainImage3 = null;
-      item.BackgroundImage = "Default_Back.jpg";
-      item.text_eng = "";
-      item.text_kor = "";
+    		item.MultiLine = 0;
+			item.line1_eng = null;
+			item.line2_eng = null;
+			item.line1_kor = null;
+			item.line2_kor= null;
+			item.optionA="";
+			item.priceA=null;
+			item.imageA="";
+			item.optionB="";
+			item.imageB="";
+			item.thumbnail= "Default_Main01.jpg";
+			item.type = 1;
+			item.MainImage1 = "Default_Thumb.jpg";
+			item.MainImage2 = null;
+			item.MainImage3 = null;
+			item.BackgroundImage = "Default_Back.jpg";
+			item.text_eng = "";
+			item.text_kor = "";
 		} else {
 			item.isAdd = false;
 		}
 
 		$scope.item = item;
-    var modalInstance = $uibModal.open({
-      animation: true,
-      templateUrl: 'menuDetail.html',
-      controller: 'menuDetailControlller',
-      size: size,
-      resolve: {
-        item: function () {
-          return $scope.item;
-        }
-      }
-    });
-
-    modalInstance.result.then(function () {
-
-    }, function () {
-      //$log.info('Modal dismissed at: ' + new Date());
-    });
-  };
+    	var modalInstance = $uibModal.open({
+      		animation: true,
+      		templateUrl: 'menuDetail.html',
+      		controller: 'menuDetailControlller',
+      		size: size,
+      		resolve: {
+        		item: function () {
+          			return $scope.item;
+        		}
+      		}
+    	});
+		modalInstance.result.then(function () {}, function () {});
+	};
 
 	$scope.saveOrdering = function() {
 
@@ -150,7 +141,6 @@ menu.controller('mainController', function ($scope, $http, $uibModal, $filter, s
 			} else {
 			 	var menues = $filter('filter')($scope.menus, {SubCategoryA: subCategories[i]}, true);
 			}
-
 			resultMenu = resultMenu.concat(menues);
 		}
 
@@ -168,11 +158,11 @@ menu.controller('mainController', function ($scope, $http, $uibModal, $filter, s
 		});
 	}
 
-  $scope.finished = function() {
+  	$scope.finished = function() {
 		$(".menuWrapper").shapeshift();
-  };
+  	};
 
-// 서브카테고리 순번 업데이트
+	// 서브카테고리 순번 업데이트
 	$scope.updateSubCategory = function () {
 		var resultMenu = [];
 
@@ -194,29 +184,39 @@ menu.controller('mainController', function ($scope, $http, $uibModal, $filter, s
 		.error(function(data) {
 			waitingDialog.hide();
 		});
-  };
+  	};
 
-// 서브카테고리 Drag and Drop
+	// 서브카테고리 Drag and Drop
 	$scope.sortableOptions = {
-    stop: function(e, ui) {
-      $scope.updateSubCategory();
-    }
-  };
+		stop: function(e, ui) {
+			$scope.updateSubCategory();
+		}
+	};
 
-// 서브카테고리 삭제
+	// 서브카테고리 삭제
 	$scope.removeSubCategory = function(item, $event) {
-
 		if ($event.stopPropagation) $event.stopPropagation();
 		if ($event.preventDefault) $event.preventDefault();
 		$event.cancelBubble = true;
 		$event.returnValue = false;
 
 		if (!$window.confirm("서브메뉴 "+ item +" 삭제 하시겠습니까?")) {
-      return;
-    }
+      		return;
+    	}
 
 		var index = $scope.subCategories.indexOf(item);
- 		$scope.subCategories.splice(index, 1);
+		$scope.subCategories.splice(index, 1);
+
+		if ($scope.subCategories.length != 0 && $scope.selectedSubCategory != "") {
+			if (index > $scope.subCategories.length-1) {
+				$scope.selectedSubCategory = $scope.subCategories[$scope.subCategories.length-1];
+			} else {
+				$scope.selectedSubCategory = $scope.subCategories[index];
+			}
+		} else {
+			$scope.selectedSubCategory == "";
+		}
+		
 		$scope.updateSubCategory();
 	};
 
