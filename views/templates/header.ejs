@@ -4,7 +4,7 @@
       <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle">
           <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
       </button>
-      <a href="/" class="navbar-brand">Mix & Malt</a>
+      <a href="/index" class="navbar-brand">Mix & Malt</a>
     </div>
     <div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav">
@@ -35,9 +35,10 @@
         </ul>
       </li>
     </ul>
-      <div class="col-sm-3 col-md-3 navbar-btn pull-right">
+      <div class="col-sm-4 col-md-4 navbar-btn pull-right">
         <button type="button" class="btn btn-primary" ng-disabled="!selectedSubCategory" ng-click="open('lg', null)">Add New</button>
         <button type="button" class="btn btn-primary" ng-disabled="!selectedSubCategory" ng-click="saveOrdering()">Save Order</button>
+        <button type="button" class="btn btn-primary" onclick="location.href='/logout'">Logout</button>
     	</div>
     </div>
   </div>

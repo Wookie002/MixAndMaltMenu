@@ -4,16 +4,9 @@ var multer  = require('multer');
 var fs = require('fs');
 var _ = require("underscore");
 var maxSize =  2 * 1024*1024;
-var mysql  = require('mysql');
 var path = require('path');
 
-var connection = mysql.createConnection({
-    host    :'127.0.0.1',
-    port : 3306,
-    user : 'mixandmalt2',
-    password : 'mixandmalt123',
-    database:'mixandmalt2'
-});
+var connection = require('../config/db');
 
 //var basePath = '/home/hosting_users/mixandmalt/apps/mixandmalt_ipadmenu/public/upload/';
 var basePath = path.resolve("./") + '/public/upload/';
@@ -41,7 +34,7 @@ var uploading = multer({ storage: storage }).fields([
 /**
   Update menu
 */
-router.post('/updateMenu', function(req, res, next) {
+router.post('/updateMenu', isLoggedIn, function(req, res, next) {
 
   uploading(req, res, function(err) {
     var menu = req.body.item;
@@ -144,7 +137,7 @@ router.post('/updateMenu', function(req, res, next) {
 /**
   Add menu
 */
-router.post('/addMenu', function(req, res, next) {
+router.post('/addMenu', isLoggedIn, function(req, res, next) {
 
   uploading(req, res, function(err) {
     var addMenu = req.body.addMenu;
@@ -293,7 +286,7 @@ router.post('/addMenu', function(req, res, next) {
 /*
   Delete menu
 **/
-router.post('/deleteMenu', function(req, res, next) {
+router.post('/deleteMenu', isLoggedIn, function(req, res, next) {
   var menu = req.body;
   var thumbnail = (!menu.thumbnail)? "": menu.thumbnail.substr(menu.thumbnail.lastIndexOf("/")+1);
   var mainImage1 = (!menu.MainImage1)? "": menu.MainImage1.substr(menu.MainImage1.lastIndexOf("/")+1);
@@ -310,5 +303,16 @@ router.post('/deleteMenu', function(req, res, next) {
     res.end("delete");
   });
 });
+
+// route middleware to make sure
+function isLoggedIn(req, res, next) {
+
+	// if user is authenticated in the session, carry on
+	if (req.isAuthenticated())
+		return next();
+
+	// if they aren't redirect them to the home page
+	res.redirect('/login');
+}
 
 module.exports = router;

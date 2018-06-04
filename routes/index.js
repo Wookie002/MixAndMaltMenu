@@ -1,17 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var mysql  = require('mysql');
-
-var connection = mysql.createConnection({
-    host    :'127.0.0.1',
-    port : 3306,
-    user : 'mixandmalt2',
-    password : 'mixandmalt123',
-    database:'mixandmalt2'
-});
+var connection = require('../config/db');
 
 /* import json data*/
-router.get('/import', function(req, res, next) {
+router.get('/import', isLoggedIn, function(req, res, next) {
   var root = require("../json/cocktail_v3.json");
 
   for (var i=0; i < root.Data.length; i++) {
@@ -28,7 +20,7 @@ router.get('/import', function(req, res, next) {
 })
 
 /* import json data*/
-router.get('/import1', function(req, res, next) {
+router.get('/import1', isLoggedIn, function(req, res, next) {
   var root = require("../json/malt_v3.json");
 
   for (var i=0; i < root.Data.length; i++) {
@@ -44,7 +36,7 @@ router.get('/import1', function(req, res, next) {
   res.json(root);
 })
 
-router.get('/import2', function(req, res, next) {
+router.get('/import2', isLoggedIn, function(req, res, next) {
   var root = require("../json/bottle_v3.json");
 
   for (var i=0; i < root.Data.length; i++) {
@@ -60,7 +52,7 @@ router.get('/import2', function(req, res, next) {
   res.json(root);
 })
 
-router.get('/import3', function(req, res, next) {
+router.get('/import3', isLoggedIn, function(req, res, next) {
   var root = require("../json/wine_v3.json");
 
   for (var i=0; i < root.Data.length; i++) {
@@ -76,7 +68,7 @@ router.get('/import3', function(req, res, next) {
   res.json(root);
 })
 
-router.get('/import4', function(req, res, next) {
+router.get('/import4', isLoggedIn, function(req, res, next) {
   var root = require("../json/beer_v3.json");
 
   for (var i=0; i < root.Data.length; i++) {
@@ -92,7 +84,7 @@ router.get('/import4', function(req, res, next) {
   res.json(root);
 })
 
-router.get('/import5', function(req, res, next) {
+router.get('/import5', isLoggedIn, function(req, res, next) {
   var root = require("../json/food_v3.json");
 
   for (var i=0; i < root.Data.length; i++) {
@@ -108,7 +100,7 @@ router.get('/import5', function(req, res, next) {
   res.json(root);
 })
 
-router.get('/import6', function(req, res, next) {
+router.get('/import6', isLoggedIn, function(req, res, next) {
   var root = require("../json/daytime_v3.json");
 
   for (var i=0; i < root.Data.length; i++) {
@@ -125,7 +117,7 @@ router.get('/import6', function(req, res, next) {
 })
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/index', isLoggedIn, function(req, res, next) {
   res.render('index', { title: 'MixAndMalt'});
 });
 
@@ -142,7 +134,7 @@ router.get('/getMenuListView', function(req, res, next) {
 });
 
 /* get ipad menu data*/
-router.get('/getMenuList', function(req, res, next) {
+router.get('/getMenuList', isLoggedIn, function(req, res, next) {
   var mainCategoryCode = req.query.mainCategoryCode;
   var query = connection.query('select * from category where Code = ?',[mainCategoryCode],function(err,rows){
     var menu = rows[0];
@@ -154,7 +146,7 @@ router.get('/getMenuList', function(req, res, next) {
 });
 
 /* save the order */
-router.post('/saveMenu', function(req, res, next) {
+router.post('/saveMenu', isLoggedIn, function(req, res, next) {
   var menu = req.body;
   for (var k=0; k < menu.Data.length; k++) {
 
@@ -240,5 +232,16 @@ router.post('/saveMenu', function(req, res, next) {
     });
   });
 });
+
+// route middleware to make sure
+function isLoggedIn(req, res, next) {
+
+	// if user is authenticated in the session, carry on
+	if (req.isAuthenticated())
+		return next();
+
+	// if they aren't redirect them to the home page
+	res.redirect('/login');
+}
 
 module.exports = router;
