@@ -10,7 +10,7 @@ var connection = mysql.createConnection({
 */
 
 var connection = mysql.createConnection({
-    host    :'127.0.0.1',
+    host    :'wookiedb.c9nb66mhctqr.ap-northeast-1.rds.amazonaws.com',
     port : 3306,
     user : 'wookie002',
     password : 'Wlsdnr79',
