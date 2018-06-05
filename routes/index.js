@@ -115,6 +115,10 @@ router.get('/import6', isLoggedIn, function(req, res, next) {
   }
   res.json(root);
 })
+/* GET home page. */
+router.get('/', isLoggedIn, function(req, res, next) {
+  res.redirect('/index');
+});
 
 /* GET home page. */
 router.get('/index', isLoggedIn, function(req, res, next) {
