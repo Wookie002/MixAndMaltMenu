@@ -276,16 +276,16 @@ menu.controller('mainController', function ($scope, $http, $uibModal, $filter, s
 		var win = $(this); //this = window
 		if (win.width() <= 600) {
 			if (!shapeshiftInitStatus || shapeshiftInitStatus == "normal-browser") {
-				$(".menuWrapper").shapeshift(shapeshiftOptions);
+				setTimeout(function(){$(".menuWrapper").shapeshift(shapeshiftOptions);}, 320);
 				shapeshiftInitStatus = "mobile-browser";
 				console.log("mobile-browser");
 			}
 		} else if (win.width() > 600) {
 			if (!shapeshiftInitStatus || shapeshiftInitStatus == "mobile-browser") {
-				$(".menuWrapper").shapeshift(shapeshiftOptions);
+				setTimeout(function(){$(".menuWrapper").shapeshift(shapeshiftOptions);}, 320);
 				shapeshiftInitStatus = "normal-browser";
 				console.log("normal-browser");
 			}
 		}
-  	});
+	});
 });

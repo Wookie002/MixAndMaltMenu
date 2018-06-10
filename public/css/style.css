@@ -7,16 +7,6 @@ body {
   /* font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; */
 }
 
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 60px;
-  background-color: #AAA;
-  padding: 10px;
-}
-
 .menuWrapper {
   position: relative;
 }
@@ -98,10 +88,10 @@ figure {
 /* Extra small devices (phones, 600px and down) */
 
 @media only screen and (max-width: 600px) {
-  .menuItm {width: 90px;}
-  .menuImg {width: 80px; height: 80px;}
+  .menuItm {width: 100px;}
+  .menuImg {width: 90px; height: 90px;}
   figcaption {font-size: 11px;}
-  body {padding: 10px; padding-top: 51px; padding-bottom: 20px;}
+  body {padding: 0px; padding-top: 51px; padding-bottom: 20px;}
 } 
 
 
