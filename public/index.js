@@ -74,7 +74,7 @@ menu.controller('mainController', function ($scope, $http, $uibModal, $filter, s
 		} else {
 			shapeshiftOptions.enableDrag=false;
 		}
-		setTimeout(function(){$(".menuWrapper").shapeshift(shapeshiftOptions);}, 320);
+		setTimeout(function(){$(".menuWrapper").shapeshift(shapeshiftOptions);}, 400);
 	}
 
 	$scope.addMenu = function (menus, newMenus) {
