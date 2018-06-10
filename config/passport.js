@@ -25,12 +25,12 @@ module.exports = function(passport) {
 
     // used to serialize the user for the session
     passport.serializeUser(function(user, done) {
-        done(null, user.id);
+        done(null, user);
     });
 
     // used to deserialize the user
-    passport.deserializeUser(function(id, done) {
-        db.query('SELECT id FROM user WHERE id = ?', id, function(err, rows){
+    passport.deserializeUser(function(user, done) {
+        db.query('SELECT * FROM user WHERE id = ?', user.id, function(err, rows){
             var user = rows[0];
             done(err, user);
         });

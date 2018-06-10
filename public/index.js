@@ -62,8 +62,9 @@ menu.controller('mainController', function ($scope, $http, $uibModal, $filter, s
 		$scope.delayDragDrop($scope.selectedCategory);
 	};
 
+	var shapeshiftOptions = {minColums: 3};
 	$scope.delayDragDrop = function (category) {
-		setTimeout(function(){$(".menuWrapper").shapeshift();}, 300);
+		setTimeout(function(){$(".menuWrapper").shapeshift(shapeshiftOptions);}, 300);
 	}
 
 	$scope.addMenu = function (menus, newMenus) {
@@ -159,7 +160,7 @@ menu.controller('mainController', function ($scope, $http, $uibModal, $filter, s
 	}
 
   	$scope.finished = function() {
-		$(".menuWrapper").shapeshift();
+		$(".menuWrapper").shapeshift(shapeshiftOptions);
   	};
 
 	// 서브카테고리 순번 업데이트
@@ -269,4 +270,22 @@ menu.controller('mainController', function ($scope, $http, $uibModal, $filter, s
 		$event.cancelBubble = true;
 		$event.returnValue = false;
 	};
+
+	var shapeshiftInitStatus;
+	$(window).on('resize', function(){
+		var win = $(this); //this = window
+		if (win.width() <= 600) {
+			if (!shapeshiftInitStatus || shapeshiftInitStatus == "normal-browser") {
+				$(".menuWrapper").shapeshift(shapeshiftOptions);
+				shapeshiftInitStatus = "mobile-browser";
+				console.log("mobile-browser");
+			}
+		} else if (win.width() > 600) {
+			if (!shapeshiftInitStatus || shapeshiftInitStatus == "mobile-browser") {
+				$(".menuWrapper").shapeshift(shapeshiftOptions);
+				shapeshiftInitStatus = "normal-browser";
+				console.log("normal-browser");
+			}
+		}
+  	});
 });

@@ -115,14 +115,19 @@ router.get('/import6', isLoggedIn, function(req, res, next) {
   }
   res.json(root);
 })
-/* GET home page. */
+/* GET index page. */
 router.get('/', isLoggedIn, function(req, res, next) {
   res.redirect('/index');
 });
 
-/* GET home page. */
+/* GET index page. */
 router.get('/index', isLoggedIn, function(req, res, next) {
-  res.render('index', { title: 'MixAndMalt'});
+  res.render('index');
+});
+
+/* GET wating page. */
+router.get('/waiting', isLoggedInForWaiting, function(req, res, next) {
+  res.render('waiting');
 });
 
 /* get web view data*/
@@ -237,15 +242,37 @@ router.post('/saveMenu', isLoggedIn, function(req, res, next) {
   });
 });
 
-// route middleware to make sure
 function isLoggedIn(req, res, next) {
 
-	// if user is authenticated in the session, carry on
+/*
+  // if user is authenticated in the session, carry on
 	if (req.isAuthenticated())
-		return next();
+  return next();
+*/
 
-	// if they aren't redirect them to the home page
+	if (req.isAuthenticated()) {
+    if (req.user.Role == "ADMIN" || req.user.Role == "ACTIVE") {
+			return next();
+		} else {
+      res.redirect('/waiting');
+      return;
+		}
+  }
+
 	res.redirect('/login');
 }
 
+function isLoggedInForWaiting(req, res, next) {
+
+  if (req.isAuthenticated()) {
+    if (req.user.Role == "ADMIN" || req.user.Role == "ACTIVE") {
+      res.redirect('/index');
+			return;
+		} else {
+      return next();
+		}
+  }
+
+	res.redirect('/login');
+}
 module.exports = router;

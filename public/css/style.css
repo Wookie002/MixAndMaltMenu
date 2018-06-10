@@ -54,7 +54,6 @@ figcaption {
     font-family: Arial;
     font-weight: bold;
     color: #bb3333;
-    width: 150px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -88,3 +87,22 @@ figure {
     color: white;
     background-color: #5FD367;
 }
+
+.menuImg {
+  width: 150px;
+  height: 150px;
+}
+
+.menuItm {width: 160px;}
+
+/* Extra small devices (phones, 600px and down) */
+
+@media only screen and (max-width: 600px) {
+  .menuItm {width: 90px;}
+  .menuImg {width: 80px; height: 80px;}
+  figcaption {font-size: 11px;}
+  body {padding: 10px; padding-top: 51px; padding-bottom: 20px;}
+} 
+
+
+

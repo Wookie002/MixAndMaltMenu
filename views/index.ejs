@@ -1,7 +1,7 @@
 <% layout('layout') -%>
 <div class="menuWrapper">
 <figure class="menuItm" ng-repeat="menu in filterMenus" ng-click="open('lg', menu)">
-    <img ng-src="{{(menu.thumbnail).split('/').pop()}}" width="150px" height="150px" />
+    <img ng-src="{{(menu.thumbnail).split('/').pop()}}"  class="menuImg" />
     <figcaption>{{menu.Name_eng}}</figcaption>
 </figure>
 </div>
