@@ -4,17 +4,12 @@ var multer  = require('multer');
 var fs = require('fs');
 var _ = require("underscore");
 var maxSize =  2 * 1024*1024;
-var mysql  = require('mysql');
+var path = require('path');
 
-var connection = mysql.createConnection({
-    host    :'127.0.0.1',
-    port : 3306,
-    user : 'mixandmalt2',
-    password : 'mixandmalt123',
-    database:'mixandmalt2'
-});
+var connection = require('../config/db');
 
-var basePath = '/home/hosting_users/mixandmalt/apps/mixandmalt_ipadmenu/public/upload/';
+//var basePath = '/home/hosting_users/mixandmalt/apps/mixandmalt_ipadmenu/public/upload/';
+var basePath = path.resolve("./") + '/public/upload/';
 
 var storage =  multer.diskStorage({
   destination: function (req, file, cb) {
@@ -39,7 +34,7 @@ var uploading = multer({ storage: storage }).fields([
 /**
   Update menu
 */
-router.post('/updateMenu', function(req, res, next) {
+router.post('/updateMenu', isLoggedIn, function(req, res, next) {
 
   uploading(req, res, function(err) {
     var menu = req.body.item;
@@ -142,7 +137,7 @@ router.post('/updateMenu', function(req, res, next) {
 /**
   Add menu
 */
-router.post('/addMenu', function(req, res, next) {
+router.post('/addMenu', isLoggedIn, function(req, res, next) {
 
   uploading(req, res, function(err) {
     var addMenu = req.body.addMenu;
@@ -216,22 +211,9 @@ router.post('/addMenu', function(req, res, next) {
   				resultMenu[k].priceB = resultMenu[k].priceB != null ?parseInt(resultMenu[k].priceB):null;
   				resultMenu[k].type = resultMenu[k].type != null ?parseInt(resultMenu[k].type):null;
         }
-
-        console.log(resultMenu);
         // 메인메뉴 삭제후 다시 저장
         connection.query('DELETE FROM menu WHERE MainCategory = ?', addMenu.MainCategory, function(err, result){
           if(err) throw err;
-
-          /*
-          for (var i=0; i < resultMenu.length; i++) {
-            var menuItem = resultMenu[i];
-
-            connection.query('INSERT INTO menu SET ?', menuItem, function(err,response){
-              if(err) throw err;
-              //console.log('Last record insert id:', response);
-            });
-          }
-          */
 
           if(resultMenu == null || resultMenu.length < 1) throw new Error('Empty save data.');
 
@@ -266,9 +248,9 @@ router.post('/addMenu', function(req, res, next) {
           , "text_kor"
           , "isAdd"];
 
-          for (var i=0; i < fieldArr.lenght; i++) {
+          for (var i=0; i < fieldArr.length; i++) {
             if (!fields) {
-              fields += key;
+              fields += fieldArr[i];
             } else {
               if (fieldArr[i] == "option") {
                 fields += ", `option`";
@@ -304,20 +286,33 @@ router.post('/addMenu', function(req, res, next) {
 /*
   Delete menu
 **/
-router.post('/deleteMenu', function(req, res, next) {
+router.post('/deleteMenu', isLoggedIn, function(req, res, next) {
   var menu = req.body;
+  var thumbnail = (!menu.thumbnail)? "": menu.thumbnail.substr(menu.thumbnail.lastIndexOf("/")+1);
+  var mainImage1 = (!menu.MainImage1)? "": menu.MainImage1.substr(menu.MainImage1.lastIndexOf("/")+1);
 
-  if (fs.existsSync(basePath + menu.thumbnail)) {
-    fs.unlinkSync(basePath + menu.thumbnail);
+  if (fs.existsSync(basePath + thumbnail)) {
+    fs.unlinkSync(basePath + thumbnail);
   }
 
-  if (fs.existsSync(basePath + menu.MainImage1)) {
-    fs.unlinkSync(basePath + menu.MainImage1);
+  if (fs.existsSync(basePath + mainImage1)) {
+    fs.unlinkSync(basePath + mainImage1);
   }
 
   connection.query('DELETE FROM menu WHERE MainCategory = ? AND Num = ?', [menu.MainCategory, menu.Num], function(err, result){
     res.end("delete");
   });
 });
+
+// route middleware to make sure
+function isLoggedIn(req, res, next) {
+
+	// if user is authenticated in the session, carry on
+	if (req.isAuthenticated())
+		return next();
+
+	// if they aren't redirect them to the home page
+	res.redirect('/login');
+}
 
 module.exports = router;

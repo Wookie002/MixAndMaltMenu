@@ -24,40 +24,38 @@ menu.controller('menuDetailControlller', function ($scope, $rootScope, $http, Up
 	}
 	// when submitting the add form, send the text to the node API
 	$scope.update = function (item) {
-			$scope.item = $scope.setOptionConfig($scope.item);
+		$scope.item = $scope.setOptionConfig($scope.item);
+		waitingDialog.show();
+      	$scope.upload = Upload.upload({
+        	url: '/updateMenu',
+        	method: 'POST',
+        	data : {
+        	  thumbnail:$scope.thumbnail
+						, mainImage1:$scope.mainImage1
+						, item : $scope.item
+        }});
 
-			waitingDialog.show();
-      $scope.upload = Upload.upload({
-        url: '/updateMenu',
-        method: 'POST',
-        data : {
-          thumbnail:$scope.thumbnail
-					, mainImage1:$scope.mainImage1
-					, item : $scope.item
-        }
-      });
-
-			$scope.upload.then(function(resp) {
-				console.log("success");
-				waitingDialog.hide();
-				$rootScope.$broadcast('getMenuList', item.MainCategory);
-			}, function(resp) {
+		$scope.upload.then(function(resp) {
+			console.log("success");
+			waitingDialog.hide();
+			$rootScope.$broadcast('getMenuList', item.MainCategory);
+		}, function(resp) {
   			console.log("error");
-				waitingDialog.hide();
-			}, function(evt) {
-			});
-			$uibModalInstance.close();
-  };
+			waitingDialog.hide();
+		}, function(evt) {
+		});
+		$uibModalInstance.close();
+  	};
 
-  $scope.ok = function () {
-    $uibModalInstance.close();
-  };
+  	$scope.ok = function () {
+  	  $uibModalInstance.close();
+  	};
 
-  $scope.cancel = function () {
-    $uibModalInstance.dismiss('cancel');
-  };
+  	$scope.cancel = function () {
+  	  $uibModalInstance.dismiss('cancel');
+  	};
 
-// 메뉴추가
+	// 메뉴추가
 	$scope.add = function (addMenu) {
 		if (!addMenu || !addMenu.SubCategoryA) {
 			return;
@@ -115,7 +113,7 @@ menu.controller('menuDetailControlller', function ($scope, $rootScope, $http, Up
 		waitingDialog.show();
 		$http.post('/deleteMenu', JSON.stringify(menu))
 		.success(function(data) {
-			$rootScope.$broadcast('getMenuList', menu.MainCategory);
+			$rootScope.$broadcast('getMenuList', menu.MainCategoryCode);
 			waitingDialog.hide();
 		})
 		.error(function(data) {

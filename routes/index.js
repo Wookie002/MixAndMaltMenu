@@ -1,17 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var mysql  = require('mysql');
-
-var connection = mysql.createConnection({
-    host    :'127.0.0.1',
-    port : 3306,
-    user : 'mixandmalt2',
-    password : 'mixandmalt123',
-    database:'mixandmalt2'
-});
+var connection = require('../config/db');
 
 /* import json data*/
-router.get('/import', function(req, res, next) {
+router.get('/import', isLoggedIn, function(req, res, next) {
   var root = require("../json/cocktail_v3.json");
 
   for (var i=0; i < root.Data.length; i++) {
@@ -22,17 +14,13 @@ router.get('/import', function(req, res, next) {
 
     connection.query('INSERT INTO menu SET ?', menu, function(err,res){
       if(err) throw err;
-
-      console.log('Last record insert id:', res);
     });
   }
-
-  //console.log(root);
   res.json(root);
 })
 
 /* import json data*/
-router.get('/import1', function(req, res, next) {
+router.get('/import1', isLoggedIn, function(req, res, next) {
   var root = require("../json/malt_v3.json");
 
   for (var i=0; i < root.Data.length; i++) {
@@ -43,16 +31,12 @@ router.get('/import1', function(req, res, next) {
 
     connection.query('INSERT INTO menu SET ?', menu, function(err,res){
       if(err) throw err;
-
-      console.log('Last record insert id:', res);
     });
   }
-
-  //console.log(root);
   res.json(root);
 })
 
-router.get('/import2', function(req, res, next) {
+router.get('/import2', isLoggedIn, function(req, res, next) {
   var root = require("../json/bottle_v3.json");
 
   for (var i=0; i < root.Data.length; i++) {
@@ -63,16 +47,12 @@ router.get('/import2', function(req, res, next) {
 
     connection.query('INSERT INTO menu SET ?', menu, function(err,res){
       if(err) throw err;
-
-      console.log('Last record insert id:', res);
     });
   }
-
-  //console.log(root);
   res.json(root);
 })
 
-router.get('/import3', function(req, res, next) {
+router.get('/import3', isLoggedIn, function(req, res, next) {
   var root = require("../json/wine_v3.json");
 
   for (var i=0; i < root.Data.length; i++) {
@@ -83,15 +63,12 @@ router.get('/import3', function(req, res, next) {
 
     connection.query('INSERT INTO menu SET ?', menu, function(err,res){
       if(err) throw err;
-
-      console.log('Last record insert id:', res);
     });
   }
-  
   res.json(root);
 })
 
-router.get('/import4', function(req, res, next) {
+router.get('/import4', isLoggedIn, function(req, res, next) {
   var root = require("../json/beer_v3.json");
 
   for (var i=0; i < root.Data.length; i++) {
@@ -102,16 +79,12 @@ router.get('/import4', function(req, res, next) {
 
     connection.query('INSERT INTO menu SET ?', menu, function(err,res){
       if(err) throw err;
-
-      console.log('Last record insert id:', res);
     });
   }
-
-  //console.log(root);
   res.json(root);
 })
 
-router.get('/import5', function(req, res, next) {
+router.get('/import5', isLoggedIn, function(req, res, next) {
   var root = require("../json/food_v3.json");
 
   for (var i=0; i < root.Data.length; i++) {
@@ -122,16 +95,12 @@ router.get('/import5', function(req, res, next) {
 
     connection.query('INSERT INTO menu SET ?', menu, function(err,res){
       if(err) throw err;
-
-      console.log('Last record insert id:', res);
     });
   }
-
-  //console.log(root);
   res.json(root);
 })
 
-router.get('/import6', function(req, res, next) {
+router.get('/import6', isLoggedIn, function(req, res, next) {
   var root = require("../json/daytime_v3.json");
 
   for (var i=0; i < root.Data.length; i++) {
@@ -142,29 +111,29 @@ router.get('/import6', function(req, res, next) {
 
     connection.query('INSERT INTO menu SET ?', menu, function(err,res){
       if(err) throw err;
-
-      console.log('Last record insert id:', res);
     });
   }
-
-  //console.log(root);
   res.json(root);
 })
+/* GET index page. */
+router.get('/', isLoggedIn, function(req, res, next) {
+  res.redirect('/index');
+});
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'MixAndMalt'});
+/* GET index page. */
+router.get('/index', isLoggedIn, function(req, res, next) {
+  res.render('index');
+});
+
+/* GET wating page. */
+router.get('/waiting', isLoggedInForWaiting, function(req, res, next) {
+  res.render('waiting');
 });
 
 /* get web view data*/
 router.get('/getMenuListView', function(req, res, next) {
-
   var mainCategoryCode = req.query.mainCategoryCode;
-
-  console.log(mainCategoryCode);
-
   var query = connection.query('select * from category where Code = ?',[mainCategoryCode],function(err,rows){
-    console.log(rows);
     var menu = rows[0];
     var query = connection.query('select * from menu where MainCategoryCode = ? order by Num ASC',[mainCategoryCode],function(err,rows){
       menu.Data = rows;
@@ -174,12 +143,8 @@ router.get('/getMenuListView', function(req, res, next) {
 });
 
 /* get ipad menu data*/
-router.get('/getMenuList', function(req, res, next) {
-
+router.get('/getMenuList', isLoggedIn, function(req, res, next) {
   var mainCategoryCode = req.query.mainCategoryCode;
-
-  console.log("mainCategory:" + mainCategoryCode);
-
   var query = connection.query('select * from category where Code = ?',[mainCategoryCode],function(err,rows){
     var menu = rows[0];
     var query = connection.query('select * from menu where MainCategoryCode = ? order by Num ASC',[mainCategoryCode],function(err,rows){
@@ -190,7 +155,7 @@ router.get('/getMenuList', function(req, res, next) {
 });
 
 /* save the order */
-router.post('/saveMenu', function(req, res, next) {
+router.post('/saveMenu', isLoggedIn, function(req, res, next) {
   var menu = req.body;
   for (var k=0; k < menu.Data.length; k++) {
 
@@ -211,17 +176,9 @@ router.post('/saveMenu', function(req, res, next) {
   connection.query('DELETE FROM menu WHERE MainCategoryCode = ?', menu.Code, function(err, result){
     if(err) throw err;
 
-    /*
-    for (var i=0; i < menu.Data.length; i++) {
-      var menuItem = menu.Data[i];
-
-      connection.query('INSERT INTO menu SET ?', menuItem, function(err,res){
-        if(err) throw err;
-
-        //console.log('Last record insert id:', res);
-      });
+    if(menu.Data.length == 0) {
+      return res.json({"result": "success"});
     }
-    */
 
     var fields = "";
     var fieldArr = ["MainCategory"
@@ -254,9 +211,9 @@ router.post('/saveMenu', function(req, res, next) {
     , "text_kor"
     , "isAdd"];
 
-    for (var i=0; i < fieldArr.lenght; i++) {
+    for (var i=0; i < fieldArr.length; i++) {
       if (!fields) {
-        fields += key;
+        fields += fieldArr[i];
       } else {
         if (fieldArr[i] == "option") {
           fields += ", `option`";
@@ -278,7 +235,6 @@ router.post('/saveMenu', function(req, res, next) {
     var sql = 'INSERT INTO menu (' + fields + ') VALUES ?'
     connection.query(sql, [values], function(err,response){
       if(err) {
-        console.log(err);
         throw err;
       }
       res.json({"result": "success"});
@@ -286,4 +242,37 @@ router.post('/saveMenu', function(req, res, next) {
   });
 });
 
+function isLoggedIn(req, res, next) {
+
+/*
+  // if user is authenticated in the session, carry on
+	if (req.isAuthenticated())
+  return next();
+*/
+
+	if (req.isAuthenticated()) {
+    if (req.user.Role == "ADMIN" || req.user.Role == "ACTIVE") {
+			return next();
+		} else {
+      res.redirect('/waiting');
+      return;
+		}
+  }
+
+	res.redirect('/login');
+}
+
+function isLoggedInForWaiting(req, res, next) {
+
+  if (req.isAuthenticated()) {
+    if (req.user.Role == "ADMIN" || req.user.Role == "ACTIVE") {
+      res.redirect('/index');
+			return;
+		} else {
+      return next();
+		}
+  }
+
+	res.redirect('/login');
+}
 module.exports = router;

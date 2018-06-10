@@ -12,7 +12,7 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort('8001');
+var port = normalizePort('80');
 var ipaddress = '127.0.0.1';
 app.set('port', port);
 
