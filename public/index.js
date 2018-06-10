@@ -286,12 +286,12 @@ menu.controller('mainController', function ($scope, $http, $uibModal, $filter, s
 		var win = $(this); //this = window
 		if (win.width() <= 600) {
 			if (!shapeshiftInitStatus || shapeshiftInitStatus == "normal-browser") {
-				setTimeout(function(){$(".menuWrapper").shapeshift(shapeshiftOptions);}, 400);
+				setTimeout(function(){$(".menuWrapper").shapeshift(shapeshiftOptions);}, 500);
 				shapeshiftInitStatus = "mobile-browser";
 			}
 		} else if (win.width() > 600) {
 			if (!shapeshiftInitStatus || shapeshiftInitStatus == "mobile-browser") {
-				setTimeout(function(){$(".menuWrapper").shapeshift(shapeshiftOptions);}, 400);
+				setTimeout(function(){$(".menuWrapper").shapeshift(shapeshiftOptions);}, 500);
 				shapeshiftInitStatus = "normal-browser";
 			}
 		}
