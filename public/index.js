@@ -60,6 +60,11 @@ menu.controller('mainController', function ($scope, $http, $uibModal, $filter, s
 		}
 
 		$scope.delayDragDrop();
+		var isExpanded = $("#menuNavbar").hasClass("in");
+		if (isExpanded) {
+			console.log("hide");
+			$("#menuNavbar").collapse("hide");
+		}
 	};
 
 	var shapeshiftOptions = {minColums: 3, enableDrag:false};
@@ -283,13 +288,11 @@ menu.controller('mainController', function ($scope, $http, $uibModal, $filter, s
 			if (!shapeshiftInitStatus || shapeshiftInitStatus == "normal-browser") {
 				$scope.delayDragDrop();
 				shapeshiftInitStatus = "mobile-browser";
-				console.log("mobile-browser");
 			}
 		} else if (win.width() > 600) {
 			if (!shapeshiftInitStatus || shapeshiftInitStatus == "mobile-browser") {
 				$scope.delayDragDrop();
 				shapeshiftInitStatus = "normal-browser";
-				console.log("normal-browser");
 			}
 		}
 	});
