@@ -74,7 +74,7 @@ menu.controller('mainController', function ($scope, $http, $uibModal, $filter, s
 		} else {
 			shapeshiftOptions.enableDrag=false;
 		}
-		setTimeout(function(){$(".menuWrapper").shapeshift(shapeshiftOptions);}, 400);
+		setTimeout(function(){$(".menuWrapper").shapeshift(shapeshiftOptions);}, 300);
 	}
 
 	$scope.addMenu = function (menus, newMenus) {
@@ -286,12 +286,12 @@ menu.controller('mainController', function ($scope, $http, $uibModal, $filter, s
 		var win = $(this); //this = window
 		if (win.width() <= 600) {
 			if (!shapeshiftInitStatus || shapeshiftInitStatus == "normal-browser") {
-				$scope.delayDragDrop();
+				setTimeout(function(){$(".menuWrapper").shapeshift(shapeshiftOptions);}, 400);
 				shapeshiftInitStatus = "mobile-browser";
 			}
 		} else if (win.width() > 600) {
 			if (!shapeshiftInitStatus || shapeshiftInitStatus == "mobile-browser") {
-				$scope.delayDragDrop();
+				setTimeout(function(){$(".menuWrapper").shapeshift(shapeshiftOptions);}, 400);
 				shapeshiftInitStatus = "normal-browser";
 			}
 		}
