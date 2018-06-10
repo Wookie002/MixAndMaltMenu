@@ -59,12 +59,17 @@ menu.controller('mainController', function ($scope, $http, $uibModal, $filter, s
 			$scope.filterMenus = $scope.menus;
 		}
 
-		$scope.delayDragDrop($scope.selectedCategory);
+		$scope.delayDragDrop();
 	};
 
-	var shapeshiftOptions = {minColums: 3};
-	$scope.delayDragDrop = function (category) {
-		setTimeout(function(){$(".menuWrapper").shapeshift(shapeshiftOptions);}, 300);
+	var shapeshiftOptions = {minColums: 3, enableDrag:false};
+	$scope.delayDragDrop = function () {
+		if ($scope.selectedSubCategory) {
+			shapeshiftOptions.enableDrag=true;
+		} else {
+			shapeshiftOptions.enableDrag=false;
+		}
+		setTimeout(function(){$(".menuWrapper").shapeshift(shapeshiftOptions);}, 320);
 	}
 
 	$scope.addMenu = function (menus, newMenus) {
@@ -160,7 +165,7 @@ menu.controller('mainController', function ($scope, $http, $uibModal, $filter, s
 	}
 
   	$scope.finished = function() {
-		$(".menuWrapper").shapeshift(shapeshiftOptions);
+		$scope.delayDragDrop();
   	};
 
 	// 서브카테고리 순번 업데이트
@@ -276,13 +281,13 @@ menu.controller('mainController', function ($scope, $http, $uibModal, $filter, s
 		var win = $(this); //this = window
 		if (win.width() <= 600) {
 			if (!shapeshiftInitStatus || shapeshiftInitStatus == "normal-browser") {
-				setTimeout(function(){$(".menuWrapper").shapeshift(shapeshiftOptions);}, 320);
+				$scope.delayDragDrop();
 				shapeshiftInitStatus = "mobile-browser";
 				console.log("mobile-browser");
 			}
 		} else if (win.width() > 600) {
 			if (!shapeshiftInitStatus || shapeshiftInitStatus == "mobile-browser") {
-				setTimeout(function(){$(".menuWrapper").shapeshift(shapeshiftOptions);}, 320);
+				$scope.delayDragDrop();
 				shapeshiftInitStatus = "normal-browser";
 				console.log("normal-browser");
 			}
